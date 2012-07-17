@@ -640,15 +640,15 @@ AIOUploader = (function() {
     this.selector = selector;
     this.callback = callback;
     this.uploader = new AjaxUpload($(this.selector)[0], {
-      action: "http://chute.com:3000/v1/upload?shortcut=" + this.currentShortcut + "&authorization=" + AIOUploader.token,
+      action: "http://avatars.io/v1/upload?shortcut=" + this.currentShortcut + "&authorization=" + AIOUploader.token,
       name: 'avatar',
       allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
       onSubmit: function() {
         _this.currentShortcut = _this.shortcut();
-        return _this.uploader._settings.action = "http://chute.com:3000/v1/upload?shortcut=" + _this.currentShortcut + "&authorization=" + AIOUploader.token;
+        return _this.uploader._settings.action = "http://avatars.io/v1/upload?shortcut=" + _this.currentShortcut + "&authorization=" + AIOUploader.token;
       },
       onComplete: function() {
-        return _this.callback(false, "http://chute.com:3000/" + _this.currentShortcut);
+        return _this.callback(false, "http://avatars.io/" + _this.currentShortcut);
       }
     });
   }

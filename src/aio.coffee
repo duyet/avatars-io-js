@@ -4,14 +4,14 @@ class AIOUploader
 	
 	constructor: (@selector, @callback) ->
 		@uploader = new AjaxUpload $(@selector)[0],
-			action: "http://chute.com:3000/v1/upload?shortcut=#{ @currentShortcut }&authorization=#{ AIOUploader.token }"
+			action: "http://avatars.io/v1/upload?shortcut=#{ @currentShortcut }&authorization=#{ AIOUploader.token }"
 			name: 'avatar'
 			allowedExtensions: ['jpg', 'jpeg', 'png', 'gif']
 			onSubmit: =>
 				@currentShortcut = @shortcut()
-				@uploader._settings.action = "http://chute.com:3000/v1/upload?shortcut=#{ @currentShortcut }&authorization=#{ AIOUploader.token }"
+				@uploader._settings.action = "http://avatars.io/v1/upload?shortcut=#{ @currentShortcut }&authorization=#{ AIOUploader.token }"
 			
-			onComplete: => @callback false, "http://chute.com:3000/#{ @currentShortcut }"
+			onComplete: => @callback false, "http://avatars.io/#{ @currentShortcut }"
 	
 	shortcut: ->
 		value = 'u'
