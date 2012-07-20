@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Avatars.io browser uploads</title>
+	<style>
+	body {
+		padding:0;
+		margin:0;
+	}
+	
+	div.container {
+		margin:40px;
+	}
+	
+	img {
+		margin-top:20px;
+		width:100px;
+		height:100px;
+	}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div>
+			<input type="file">
+		</div>
+		<img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw%3D%3D">
+	</div>	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="../dist/aio.min.js"></script>
+	<script>
+	$(function(){
+		AIOUploader.token = prompt('Enter your public token');
+		new AIOUploader('input[type="file"]', function(err, url){
+			$('img').attr('src', url);
+		});
+	});
+	</script>
+</body>
+</html>
