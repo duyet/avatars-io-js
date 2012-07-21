@@ -28,11 +28,12 @@
 		<img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw%3D%3D">
 	</div>	
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	<script src="../dist/aio.min.js"></script>
+	<script src="../dist/avatars.io.min.js"></script>
 	<script>
 	$(function(){
-		AIOUploader.token = prompt('Enter your public token');
-		new AIOUploader('input[type="file"]', function(err, url){
+		client = new AvatarsIO(prompt('Enter your public token'));
+		uploader = client.create('input[type="file"]');
+		uploader.on('complete', function(url){
 			$('img').attr('src', url);
 		});
 	});

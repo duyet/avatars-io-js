@@ -9,7 +9,7 @@ First, go to [avatars.io](http://avatars.io) and obtain your authorization token
 Include *aio.min.* in your web page(2.6kb) and configure it:
 
 ```html
-<script src="aio.min.js"></script>
+<script src="avatars.io.min.js"></script>
 <script>
 AIOUploader.token = 'Your authorization token you obtained for avatars.io';
 

@@ -5,7 +5,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     meta: {
       version: '0.1.0',
-      banner: '/*! AIOUploader - v<%= meta.version %> - ' +
+      banner: '/*! Avatars.io - v<%= meta.version %> - ' +
         '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
         '* http://github.com/chute/avatars-io-js/\n' +
         '* Copyright (c) <%= grunt.template.today("yyyy") %> ' +
@@ -13,18 +13,18 @@ module.exports = function(grunt) {
     },
     concat: {
       dist: {
-        src: ['<banner:meta.banner>', 'vendor/ajaxupload.js', '<file_strip_banner:src/aio.js>'],
-        dest: 'dist/aio.js'
+        src: ['<banner:meta.banner>', 'vendor/ajaxupload.js', '<file_strip_banner:src/avatars.io.js>'],
+        dest: 'dist/avatars.io.js'
       }
     },
     min: {
       dist: {
         src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
-        dest: 'dist/aio.min.js'
+        dest: 'dist/avatars.io.min.js'
       }
     },
     watch: {
-      files: ['vendor/ajaxupload.js', 'src/aio.js'],
+      files: ['vendor/ajaxupload.js', 'src/avatars.io.js'],
       tasks: 'concat min'
     },
     uglify: {}
