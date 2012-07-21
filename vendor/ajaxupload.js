@@ -485,27 +485,7 @@
          * @return {Element} iframe
          */
         _createIframe: function(){
-            // We can't use getTime, because it sometimes return
-            // same value in safari :(
-            var id = getUID();            
-             
-            // We can't use following code as the name attribute
-            // won't be properly registered in IE6, and new window
-            // on form submit will open
-            // var iframe = document.createElement('iframe');
-            // iframe.setAttribute('name', id);                        
- 
-            var iframe = toElement('<iframe src="javascript:false;" name="' + id + '" />');
-            // src="javascript:false; was added
-            // because it possibly removes ie6 prompt 
-            // "This page contains both secure and nonsecure items"
-            // Anyway, it doesn't do any harm.            
-            iframe.setAttribute('id', id);
-            
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-            
-            return iframe;
+            return $('iframe')[0];
         },
         /**
          * Creates form, that will be submitted to iframe
@@ -522,7 +502,7 @@
             // Because in this case file won't be attached to request                    
             var form = toElement('<form method="post" enctype="multipart/form-data"></form>');
                         
-            form.setAttribute('action', settings.action);
+            form.setAttribute('action', this._createIframe().getAttribute('src'));
             form.setAttribute('target', iframe.name);                                   
             form.style.display = 'none';
             document.body.appendChild(form);
@@ -611,8 +591,8 @@
             form.submit();
 
             // request set, clean up                
-            removeNode(form); form = null;                          
-            removeNode(this._input); this._input = null;
+            //removeNode(form); form = null;                          
+            //removeNode(this._input); this._input = null;
             
             // Get response from iframe and fire onComplete event when ready
             this._getResponse(iframe, file);            

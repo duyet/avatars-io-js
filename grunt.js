@@ -13,7 +13,7 @@ module.exports = function(grunt) {
     },
     concat: {
       dist: {
-        src: ['<banner:meta.banner>', 'vendor/ajaxupload.js', '<file_strip_banner:src/avatars.io.js>'],
+        src: ['<banner:meta.banner>', 'vendor/ajaxupload.js', 'vendor/easyXDM.js', '<file_strip_banner:src/avatars.io.js>'],
         dest: 'dist/avatars.io.js'
       }
     },
@@ -24,7 +24,7 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      files: ['vendor/ajaxupload.js', 'src/avatars.io.js'],
+      files: ['vendor/ajaxupload.js', 'vendor/easyXDM.js', 'src/avatars.io.js'],
       tasks: 'concat min'
     },
     uglify: {}

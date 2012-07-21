@@ -6,16 +6,17 @@ Use this library to upload images to avatars.io and get URLs to them. No server-
 
 First, go to [avatars.io](http://avatars.io) and obtain your authorization token for use on client side.
 
-Include *aio.min.* in your web page(2.6kb) and configure it:
+Include *avatars.io.min.js* in your web page(2.6kb) and configure it:
 
 ```html
 <script src="avatars.io.min.js"></script>
 <script>
-AIOUploader.token = 'Your authorization token you obtained for avatars.io';
+var client = new AvatarsIO('Your public token'); // obtain at http://avatars.io/
 
 $(function(){
-	new AIOUploader('#avatar', function(err, url){
-		alert(url);
+	var uploader = client.create('#avatar');
+	uploader.on('complete', function(url){
+		alert(url); // for example, http://avatars.io/ua3aS5a
 	});
 });
 </script>
@@ -30,6 +31,24 @@ Next, set up *file* field with *#avatar* id (for example):
 ```
 
 **Note**: This component requires jQuery.
+
+# Events
+
+Library emits such events as: init, new, complete. You can add listeners to these using **on** method:
+
+```javascript
+uploader.on('init', function(){
+	// instance of uploader just finished initializing
+});
+
+uploader.on('new', function(){
+	// fires when new avatar starts uploading
+});
+
+uploader.on('complete', function(url){
+	// fires when avatar finished uploading
+});
+```
 
 # License
 

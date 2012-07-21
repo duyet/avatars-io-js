@@ -19,25 +19,22 @@ AvatarsIO.Uploader = (function() {
 
   Uploader.prototype.listeners = {};
 
-  Uploader.prototype.state = 'new';
-
-  Uploader.prototype.currentShortcut = '';
-
   function Uploader(token, selector) {
     var _this = this;
     this.token = token;
     this.selector = selector;
+    this.socket = new easyXDM.Socket({
+      remote: "http://chute.com:3001/v1/upload?authorization=" + this.token,
+      onMessage: function(message, origin) {
+        return _this.emit('complete', message);
+      }
+    });
     this.widget = new AjaxUpload($(this.selector)[0], {
-      action: "http://avatars.io/v1/upload?shortcut=" + this.currentShortcut + "&authorization=" + this.token,
+      action: "http://chute.com:3001/v1/upload?authorization=" + this.token,
       name: 'avatar',
       allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
       onSubmit: function() {
-        _this.currentShortcut = _this.shortcut();
-        _this.widget._settings.action = "http://avatars.io/v1/upload?shortcut=" + _this.currentShortcut + "&authorization=" + _this.token;
         return _this.emit('new');
-      },
-      onComplete: function() {
-        return _this.emit('complete', "http://avatars.io/" + _this.currentShortcut);
       }
     });
     this.emit('init');
@@ -64,19 +61,6 @@ AvatarsIO.Uploader = (function() {
       listener.apply(context, [args]);
     }
     return void 0;
-  };
-
-  Uploader.prototype.shortcut = function() {
-    var possible, value;
-    value = 'u';
-    possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    while (true) {
-      if (value.length === 10) {
-        break;
-      }
-      value += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return value;
   };
 
   return Uploader;
