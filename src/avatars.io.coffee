@@ -8,11 +8,11 @@ class AvatarsIO.Uploader
 	
 	constructor: (@token, @selector) ->
 		@socket = new easyXDM.Socket
-			remote: "http://chute.com:3001/v1/upload?authorization=#{ @token }"
+			remote: "http://avatars.io/v1/upload?authorization=#{ @token }"
 			onMessage: (message, origin) =>	@emit 'complete', message
 		
 		@widget = new AjaxUpload $(@selector)[0],
-			action: "http://chute.com:3001/v1/upload?authorization=#{ @token }"
+			action: "http://avatars.io/v1/upload?authorization=#{ @token }"
 			name: 'avatar'
 			allowedExtensions: ['jpg', 'jpeg', 'png', 'gif']
 			onSubmit: => @emit 'new'

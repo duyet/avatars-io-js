@@ -3209,13 +3209,13 @@ AvatarsIO.Uploader = (function() {
     this.token = token;
     this.selector = selector;
     this.socket = new easyXDM.Socket({
-      remote: "http://chute.com:3001/v1/upload?authorization=" + this.token,
+      remote: "http://avatars.io/v1/upload?authorization=" + this.token,
       onMessage: function(message, origin) {
         return _this.emit('complete', message);
       }
     });
     this.widget = new AjaxUpload($(this.selector)[0], {
-      action: "http://chute.com:3001/v1/upload?authorization=" + this.token,
+      action: "http://avatars.io/v1/upload?authorization=" + this.token,
       name: 'avatar',
       allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
       onSubmit: function() {
