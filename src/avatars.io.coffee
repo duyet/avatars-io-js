@@ -5,19 +5,34 @@ class AvatarsIO
 
 class AvatarsIO.Uploader
 	listeners: {} # collection of listeners for events
+	shortcut: ''
+	allowedExtensions: ['jpg', 'jpeg', 'png', 'gif']
 	
 	constructor: (@token, @selector) ->
+		@initialize()
+		@emit 'init'
+	
+	initialize: ->
+		url = "http://avatars.io/v1/upload?authorization=#{ @token }#{ '&shortcut=' + @shortcut if @shortcut.length > 0 }"
 		@socket = new easyXDM.Socket
-			remote: "http://avatars.io/v1/upload?authorization=#{ @token }"
+			remote: url
 			onMessage: (message, origin) =>	@emit 'complete', message
 		
-		@widget = new AjaxUpload $(@selector)[0],
-			action: "http://avatars.io/v1/upload?authorization=#{ @token }"
-			name: 'avatar'
-			allowedExtensions: ['jpg', 'jpeg', 'png', 'gif']
-			onSubmit: => @emit 'new'
-		
-		@emit 'init'
+		if not @widget
+			@widget = new AjaxUpload $(@selector)[0],
+				action: url
+				name: 'avatar'
+				allowedExtensions: @allowedExtensions
+				onSubmit: => @emit 'new'
+	
+	setShortcut: (@shortcut = '') ->
+		setTimeout =>
+			@socket.destroy() if @socket
+			@initialize()
+		, 100
+	
+	setAllowedExtensions: (@allowedExtensions = []) ->
+		@widget._settings.allowedExtensions = @allowedExtensions if @widget
 	
 	on: (event, listener) ->
 		@listeners[event] = [] if not @listeners[event]

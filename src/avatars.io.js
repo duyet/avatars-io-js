@@ -19,26 +19,56 @@ AvatarsIO.Uploader = (function() {
 
   Uploader.prototype.listeners = {};
 
+  Uploader.prototype.shortcut = '';
+
+  Uploader.prototype.allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+
   function Uploader(token, selector) {
-    var _this = this;
     this.token = token;
     this.selector = selector;
+    this.initialize();
+    this.emit('init');
+  }
+
+  Uploader.prototype.initialize = function() {
+    var url,
+      _this = this;
+    url = "http://avatars.io/v1/upload?authorization=" + this.token + (this.shortcut.length > 0 ? '&shortcut=' + this.shortcut : void 0);
     this.socket = new easyXDM.Socket({
-      remote: "http://avatars.io/v1/upload?authorization=" + this.token,
+      remote: url,
       onMessage: function(message, origin) {
         return _this.emit('complete', message);
       }
     });
-    this.widget = new AjaxUpload($(this.selector)[0], {
-      action: "http://avatars.io/v1/upload?authorization=" + this.token,
-      name: 'avatar',
-      allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-      onSubmit: function() {
-        return _this.emit('new');
+    if (!this.widget) {
+      return this.widget = new AjaxUpload($(this.selector)[0], {
+        action: url,
+        name: 'avatar',
+        allowedExtensions: this.allowedExtensions,
+        onSubmit: function() {
+          return _this.emit('new');
+        }
+      });
+    }
+  };
+
+  Uploader.prototype.setShortcut = function(shortcut) {
+    var _this = this;
+    this.shortcut = shortcut != null ? shortcut : '';
+    return setTimeout(function() {
+      if (_this.socket) {
+        _this.socket.destroy();
       }
-    });
-    this.emit('init');
-  }
+      return _this.initialize();
+    }, 100);
+  };
+
+  Uploader.prototype.setAllowedExtensions = function(allowedExtensions) {
+    this.allowedExtensions = allowedExtensions != null ? allowedExtensions : [];
+    if (this.widget) {
+      return this.widget._settings.allowedExtensions = this.allowedExtensions;
+    }
+  };
 
   Uploader.prototype.on = function(event, listener) {
     if (!this.listeners[event]) {

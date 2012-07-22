@@ -428,6 +428,7 @@
               
             this._input = input;
         },
+		
         _clearInput : function(){
             if (!this._input){
                 return;
@@ -576,6 +577,10 @@
                 this._clearInput();                
                 return;
             }
+			
+			if(-1 == this._settings.allowedExtensions.indexOf(getExt($(this._input).val()))) {
+				return alert('Only ' + this._settings.allowedExtensions.join(', ') + ' ' + (this._settings.allowedExtensions.length == 1 ? 'is' : 'are') + ' allowed');
+			}
             
             // sending request    
             var iframe = this._createIframe();
