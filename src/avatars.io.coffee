@@ -13,7 +13,7 @@ class AvatarsIO.Uploader
 		@emit 'init'
 	
 	initialize: ->
-		url = "http://avatars.io/v1/upload?authorization=#{ @token }#{ '&shortcut=' + @shortcut if @shortcut.length > 0 }"
+		url = "http://avatars.io/v1/upload?authorization=#{ @token }#{ if @shortcut.length > 0 then '&shortcut=' + @shortcut else '' }"
 		@socket = new easyXDM.Socket
 			remote: url
 			onMessage: (message, origin) =>	@emit 'complete', message

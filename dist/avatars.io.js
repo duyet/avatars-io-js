@@ -29,15 +29,7 @@
      * @param fn callback This refers to the passed element
      */
     function addEvent(el, type, fn){
-        if (el.addEventListener) {
-            el.addEventListener(type, fn, false);
-        } else if (el.attachEvent) {
-            el.attachEvent('on' + type, function(){
-                fn.call(el);
-	        });
-	    } else {
-            throw new Error('not supported or DOM not loaded');
-        }
+		$(el).on(type, fn);
     }   
     
     /**
@@ -52,15 +44,21 @@
      */
     function addResizeEvent(fn){
         var timeout;
-               
-	    addEvent(window, 'resize', function(){
-            if (timeout){
-                clearTimeout(timeout);
-            }
-            timeout = setTimeout(fn, 100);                        
-        });
+		
+		$(window).on('resize', function(){
+			if(timeout) {
+				clearTimeout(timeout);
+			}
+			
+			timeout = setTimeout(fn, 100);
+		});
     }    
     
+
+	function getOffset(el){
+		return $(el).offset();
+	}
+	/*
     // Needs more testing, will be rewriten for next version        
     // getOffset function copied from jQuery lib (http://jquery.com/)
     if (document.documentElement.getBoundingClientRect){
@@ -110,7 +108,7 @@
             };
         };
     }
-    
+    */
     /**
      * Returns left, top, right and bottom properties describing the border-box,
      * in pixels, with the top-left relative to the body
@@ -141,11 +139,7 @@
      * @param {Object} styles
      */
     function addStyles(el, styles){
-        for (var name in styles) {
-            if (styles.hasOwnProperty(name)) {
-                el.style[name] = styles[name];
-            }
-        }
+		$(el).css(styles);
     }
         
     /**
@@ -172,12 +166,9 @@
     * Uses innerHTML to create an element
     */
     var toElement = (function(){
-        var div = document.createElement('div');
-        return function(html){
-            div.innerHTML = html;
-            var el = div.firstChild;
-            return div.removeChild(el);
-        };
+		return function(html){
+			return $(html)[0];
+		};
     })();
             
     /**
@@ -209,18 +200,14 @@
         return (-1 !== file.indexOf('.')) ? file.replace(/.*[.]/, '') : '';
     }
 
-    function hasClass(el, name){        
-        var re = new RegExp('\\b' + name + '\\b');        
-        return re.test(el.className);
+    function hasClass(el, name){   
+	    return $(el).hasClass(name);
     }    
     function addClass(el, name){
-        if ( ! hasClass(el, name)){   
-            el.className += ' ' + name;
-        }
+		$(el).addClass(name);
     }    
     function removeClass(el, name){
-        var re = new RegExp('\\b' + name + '\\b');                
-        el.className = el.className.replace(re, '');        
+		$(el).removeClass(name);        
     }
     
     function removeNode(el){
@@ -3223,7 +3210,7 @@ AvatarsIO.Uploader = (function() {
   Uploader.prototype.initialize = function() {
     var url,
       _this = this;
-    url = "http://avatars.io/v1/upload?authorization=" + this.token + (this.shortcut.length > 0 ? '&shortcut=' + this.shortcut : void 0);
+    url = "http://avatars.io/v1/upload?authorization=" + this.token + (this.shortcut.length > 0 ? '&shortcut=' + this.shortcut : '');
     this.socket = new easyXDM.Socket({
       remote: url,
       onMessage: function(message, origin) {

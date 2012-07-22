@@ -33,7 +33,6 @@
 	$(function(){
 		client = new AvatarsIO(prompt('Enter your public token'));
 		uploader = client.create('input[type="file"]');
-		uploader.setShortcut('2pac');
 		uploader.setAllowedExtensions(['png', 'jpg']);
 		uploader.on('complete', function(url){
 			$('img').attr('src', url);

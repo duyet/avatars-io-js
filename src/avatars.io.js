@@ -33,7 +33,7 @@ AvatarsIO.Uploader = (function() {
   Uploader.prototype.initialize = function() {
     var url,
       _this = this;
-    url = "http://avatars.io/v1/upload?authorization=" + this.token + (this.shortcut.length > 0 ? '&shortcut=' + this.shortcut : void 0);
+    url = "http://avatars.io/v1/upload?authorization=" + this.token + (this.shortcut.length > 0 ? '&shortcut=' + this.shortcut : '');
     this.socket = new easyXDM.Socket({
       remote: url,
       onMessage: function(message, origin) {
