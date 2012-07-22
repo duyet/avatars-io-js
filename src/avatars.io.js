@@ -7,8 +7,8 @@ AvatarsIO = (function() {
     this.token = token;
   }
 
-  AvatarsIO.prototype.create = function(selector) {
-    return new AvatarsIO.Uploader(this.token, selector);
+  AvatarsIO.prototype.create = function(input) {
+    return new AvatarsIO.Uploader(this.token, input);
   };
 
   return AvatarsIO;
@@ -23,9 +23,9 @@ AvatarsIO.Uploader = (function() {
 
   Uploader.prototype.allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
 
-  function Uploader(token, selector) {
+  function Uploader(token, input) {
     this.token = token;
-    this.selector = selector;
+    this.input = input;
     this.initialize();
     this.emit('init');
   }
@@ -41,7 +41,7 @@ AvatarsIO.Uploader = (function() {
       }
     });
     if (!this.widget) {
-      return this.widget = new AjaxUpload($(this.selector)[0], {
+      return this.widget = new AjaxUpload(this.input, {
         action: url,
         name: 'avatar',
         allowedExtensions: this.allowedExtensions,

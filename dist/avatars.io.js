@@ -29,7 +29,15 @@
      * @param fn callback This refers to the passed element
      */
     function addEvent(el, type, fn){
-		$(el).on(type, fn);
+        if (el.addEventListener) {
+            el.addEventListener(type, fn, false);
+        } else if (el.attachEvent) {
+            el.attachEvent('on' + type, function(){
+                fn.call(el);
+	        });
+	    } else {
+            throw new Error('not supported or DOM not loaded');
+        }
     }   
     
     /**
@@ -44,21 +52,15 @@
      */
     function addResizeEvent(fn){
         var timeout;
-		
-		$(window).on('resize', function(){
-			if(timeout) {
-				clearTimeout(timeout);
-			}
-			
-			timeout = setTimeout(fn, 100);
-		});
+               
+	    addEvent(window, 'resize', function(){
+            if (timeout){
+                clearTimeout(timeout);
+            }
+            timeout = setTimeout(fn, 100);                        
+        });
     }    
     
-
-	function getOffset(el){
-		return $(el).offset();
-	}
-	/*
     // Needs more testing, will be rewriten for next version        
     // getOffset function copied from jQuery lib (http://jquery.com/)
     if (document.documentElement.getBoundingClientRect){
@@ -108,7 +110,7 @@
             };
         };
     }
-    */
+    
     /**
      * Returns left, top, right and bottom properties describing the border-box,
      * in pixels, with the top-left relative to the body
@@ -139,7 +141,11 @@
      * @param {Object} styles
      */
     function addStyles(el, styles){
-		$(el).css(styles);
+        for (var name in styles) {
+            if (styles.hasOwnProperty(name)) {
+                el.style[name] = styles[name];
+            }
+        }
     }
         
     /**
@@ -166,9 +172,12 @@
     * Uses innerHTML to create an element
     */
     var toElement = (function(){
-		return function(html){
-			return $(html)[0];
-		};
+        var div = document.createElement('div');
+        return function(html){
+            div.innerHTML = html;
+            var el = div.firstChild;
+            return div.removeChild(el);
+        };
     })();
             
     /**
@@ -200,14 +209,18 @@
         return (-1 !== file.indexOf('.')) ? file.replace(/.*[.]/, '') : '';
     }
 
-    function hasClass(el, name){   
-	    return $(el).hasClass(name);
+    function hasClass(el, name){        
+        var re = new RegExp('\\b' + name + '\\b');        
+        return re.test(el.className);
     }    
     function addClass(el, name){
-		$(el).addClass(name);
+        if ( ! hasClass(el, name)){   
+            el.className += ' ' + name;
+        }
     }    
     function removeClass(el, name){
-		$(el).removeClass(name);        
+        var re = new RegExp('\\b' + name + '\\b');                
+        el.className = el.className.replace(re, '');        
     }
     
     function removeNode(el){
@@ -477,7 +490,7 @@
          * @return {Element} iframe
          */
         _createIframe: function(){
-            return $('iframe')[0];
+            return document.getElementsByTagName('iframe')[0];
         },
         /**
          * Creates form, that will be submitted to iframe
@@ -569,7 +582,7 @@
                 return;
             }
 			
-			if(-1 == this._settings.allowedExtensions.indexOf(getExt($(this._input).val()))) {
+			if(-1 == this._settings.allowedExtensions.indexOf(getExt(this._input.value))) {
 				return alert('Only ' + this._settings.allowedExtensions.join(', ') + ' ' + (this._settings.allowedExtensions.length == 1 ? 'is' : 'are') + ' allowed');
 			}
             
@@ -3184,8 +3197,8 @@ AvatarsIO = (function() {
     this.token = token;
   }
 
-  AvatarsIO.prototype.create = function(selector) {
-    return new AvatarsIO.Uploader(this.token, selector);
+  AvatarsIO.prototype.create = function(input) {
+    return new AvatarsIO.Uploader(this.token, input);
   };
 
   return AvatarsIO;
@@ -3200,9 +3213,9 @@ AvatarsIO.Uploader = (function() {
 
   Uploader.prototype.allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
 
-  function Uploader(token, selector) {
+  function Uploader(token, input) {
     this.token = token;
-    this.selector = selector;
+    this.input = input;
     this.initialize();
     this.emit('init');
   }
@@ -3218,7 +3231,7 @@ AvatarsIO.Uploader = (function() {
       }
     });
     if (!this.widget) {
-      return this.widget = new AjaxUpload($(this.selector)[0], {
+      return this.widget = new AjaxUpload(this.input, {
         action: url,
         name: 'avatar',
         allowedExtensions: this.allowedExtensions,

@@ -1,14 +1,14 @@
 class AvatarsIO
 	constructor: (@token) ->
 	
-	create: (selector) -> new AvatarsIO.Uploader(@token, selector) # factory method
+	create: (input) -> new AvatarsIO.Uploader(@token, input) # factory method
 
 class AvatarsIO.Uploader
 	listeners: {} # collection of listeners for events
 	shortcut: ''
 	allowedExtensions: ['jpg', 'jpeg', 'png', 'gif']
 	
-	constructor: (@token, @selector) ->
+	constructor: (@token, @input) ->
 		@initialize()
 		@emit 'init'
 	
@@ -19,7 +19,7 @@ class AvatarsIO.Uploader
 			onMessage: (message, origin) =>	@emit 'complete', message
 		
 		if not @widget
-			@widget = new AjaxUpload $(@selector)[0],
+			@widget = new AjaxUpload @input,
 				action: url
 				name: 'avatar'
 				allowedExtensions: @allowedExtensions

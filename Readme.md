@@ -32,8 +32,6 @@ Next, set up *file* field with *#avatar* id (for example):
 </div>
 ```
 
-**Note**: This component requires jQuery.
-
 # Events
 
 Library emits such events as: init, new, complete. You can add listeners to these using **on** method:
