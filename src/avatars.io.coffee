@@ -5,7 +5,7 @@ class AvatarsIO
 
 class AvatarsIO.Uploader
 	listeners: {} # collection of listeners for events
-	shortcut: ''
+	identifier: ''
 	allowedExtensions: ['jpg', 'jpeg', 'png', 'gif']
 	
 	constructor: (@token, @input) ->
@@ -13,7 +13,7 @@ class AvatarsIO.Uploader
 		@emit 'init'
 	
 	initialize: ->
-		url = "http://avatars.io/v1/upload?authorization=#{ @token }#{ if @shortcut.length > 0 then '&shortcut=' + @shortcut else '' }"
+		url = "http://avatars.io/v1/upload?authorization=#{ @token }#{ if @identifier.length > 0 then '&shortcut=' + @identifier else '' }"
 		@socket = new easyXDM.Socket
 			remote: url
 			onMessage: (message, origin) =>	@emit 'complete', message
@@ -25,7 +25,7 @@ class AvatarsIO.Uploader
 				allowedExtensions: @allowedExtensions
 				onSubmit: => @emit 'new'
 	
-	setShortcut: (@shortcut = '') ->
+	setIdentifier: (@identifier = '') ->
 		setTimeout =>
 			@socket.destroy() if @socket
 			@initialize()

@@ -19,7 +19,7 @@ AvatarsIO.Uploader = (function() {
 
   Uploader.prototype.listeners = {};
 
-  Uploader.prototype.shortcut = '';
+  Uploader.prototype.identifier = '';
 
   Uploader.prototype.allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
 
@@ -33,7 +33,7 @@ AvatarsIO.Uploader = (function() {
   Uploader.prototype.initialize = function() {
     var url,
       _this = this;
-    url = "http://avatars.io/v1/upload?authorization=" + this.token + (this.shortcut.length > 0 ? '&shortcut=' + this.shortcut : '');
+    url = "http://avatars.io/v1/upload?authorization=" + this.token + (this.identifier.length > 0 ? '&shortcut=' + this.identifier : '');
     this.socket = new easyXDM.Socket({
       remote: url,
       onMessage: function(message, origin) {
@@ -52,9 +52,9 @@ AvatarsIO.Uploader = (function() {
     }
   };
 
-  Uploader.prototype.setShortcut = function(shortcut) {
+  Uploader.prototype.setIdentifier = function(identifier) {
     var _this = this;
-    this.shortcut = shortcut != null ? shortcut : '';
+    this.identifier = identifier != null ? identifier : '';
     return setTimeout(function() {
       if (_this.socket) {
         _this.socket.destroy();
