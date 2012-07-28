@@ -52,4 +52,4 @@ uploader.on('complete', function(url){
 
 # License
 
-MIT.
+&copy; Chute Corporation.
