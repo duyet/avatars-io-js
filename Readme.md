@@ -15,7 +15,6 @@ var client = new AvatarsIO('Your public token'); // obtain at http://avatars.io/
 
 $(function(){
 	var uploader = client.create('#avatar'); // selector for input[type="file"] field, here #avatar, for example
-	uploader.setIdentifier('steve'); // optional, if you want all uploads to be assigned to /steve
 	uploader.setAllowedExtensions(['png', 'jpg']); // optional, defaults to png, gif, jpg, jpeg
 	uploader.on('complete', function(url){
 		alert(url); // for example, http://avatars.io/ua3aS5a
