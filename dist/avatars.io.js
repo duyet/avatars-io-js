@@ -1,4 +1,4 @@
-/*! Avatars.io - v0.1.0 - 2012-07-23
+/*! Avatars.io - v0.1.1 - 2012-08-07
 * http://github.com/chute/avatars-io-js/
 * Copyright (c) 2012 Vadim Demedes; Licensed MIT */
 
@@ -3242,7 +3242,7 @@ AvatarsIO.Uploader = (function() {
     }
   };
 
-  Uploader.prototype.setIdentifier = function(identifier) {
+  Uploader.prototype.setAlbum = function(identifier) {
     var _this = this;
     this.identifier = identifier != null ? identifier : '';
     return setTimeout(function() {
@@ -3251,6 +3251,10 @@ AvatarsIO.Uploader = (function() {
       }
       return _this.initialize();
     }, 100);
+  };
+
+  Uploader.prototype.setAlbumID = function() {
+    return this.setAlbum.apply(this, arguments);
   };
 
   Uploader.prototype.setAllowedExtensions = function(allowedExtensions) {

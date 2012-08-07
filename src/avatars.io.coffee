@@ -25,11 +25,13 @@ class AvatarsIO.Uploader
 				allowedExtensions: @allowedExtensions
 				onSubmit: => @emit 'new'
 	
-	setIdentifier: (@identifier = '') ->
+	setAlbum: (@identifier = '') ->
 		setTimeout =>
 			@socket.destroy() if @socket
 			@initialize()
 		, 100
+	
+	setAlbumID: -> @setAlbum.apply @, arguments
 	
 	setAllowedExtensions: (@allowedExtensions = []) ->
 		@widget._settings.allowedExtensions = @allowedExtensions if @widget

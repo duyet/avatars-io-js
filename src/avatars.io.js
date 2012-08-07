@@ -52,7 +52,7 @@ AvatarsIO.Uploader = (function() {
     }
   };
 
-  Uploader.prototype.setIdentifier = function(identifier) {
+  Uploader.prototype.setAlbum = function(identifier) {
     var _this = this;
     this.identifier = identifier != null ? identifier : '';
     return setTimeout(function() {
@@ -61,6 +61,10 @@ AvatarsIO.Uploader = (function() {
       }
       return _this.initialize();
     }, 100);
+  };
+
+  Uploader.prototype.setAlbumID = function() {
+    return this.setAlbum.apply(this, arguments);
   };
 
   Uploader.prototype.setAllowedExtensions = function(allowedExtensions) {
