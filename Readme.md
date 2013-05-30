@@ -4,7 +4,7 @@ Use this library to upload images to avatars.io and get URLs to them. No server-
 
 # Getting Started
 
-First, go to [avatars.io](http://avatars.io) and obtain your authorization token for use on client side.
+First, go to [avatars.io](http://avatars.io) and obtain your public authorization token for use on client side.
 
 Include *avatars.io.min.js* in your web page(2.6kb) and configure it:
 
@@ -33,14 +33,14 @@ Next, set up *file* field with *#avatar* id (for example):
 
 # Events
 
-Library emits such events as: init, new, complete. You can add listeners to these using **on** method:
+Library emits such events as: init, start, complete. You can add listeners to these using **on** method:
 
 ```javascript
 uploader.on('init', function(){
-	// instance of uploader just finished initializing
+	// instance of uploader initialized
 });
 
-uploader.on('new', function(){
+uploader.on('start', function(){
 	// fires when new avatar starts uploading
 });
 

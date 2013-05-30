@@ -34,8 +34,14 @@
 		client = new AvatarsIO(prompt('Enter your public token'));
 		uploader = client.create(document.querySelector('input[type="file"]'));
 		uploader.setAllowedExtensions(['png', 'jpg']);
+		uploader.setIdentifier('really-cool-avatar');
 		uploader.on('complete', function(url){
+			console.log(url);
 			document.querySelector('img').setAttribute('src', url);
+		});
+		
+		uploader.on('error', function(err){
+			console.log('error happened during request');
 		});
 	}, false);
 	</script>
